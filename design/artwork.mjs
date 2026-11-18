@@ -44,7 +44,7 @@ function hero(H = 440, file = 'assets/hero.svg') {
     label('Generative interaction · p5.js · 2025', { x: 64, y: 118 + dy }) +
     text('Orbit Playground', { font: F.display, size: 62, x: 62, y: 190 + dy, fill: C.ink }) +
     paragraph('Click a point and set a small universe in motion. Every click is a new centre of gravity; colour and speed decide whether it feels quiet, playful or restless.', { x: 64, y: 240 + dy, width: 520, size: 19, fill: C.ink2 }).svg +
-    label('Click · Hold · 1 2 3 · ↑ ↓', { x: 64, y: 360 + dy, fill: C.accent2 });
+    label('Click · Hold · 1–4 · ↑ ↓ · O · L · K', { x: 64, y: 360 + dy, fill: C.accent2 });
   write(file, svg(W, H, body, {
     title: 'Orbit Playground',
     desc: 'Generative interaction in p5.js. Dots in rose, violet and mint orbit four centres on a dark canvas.',
@@ -118,24 +118,81 @@ function anatomy() {
 function palettes() {
   const W = 1280, H = 240;
   let b = frame(W, H);
-  const list = [['1', 'Rose', ROSE, '220 70 135', 'alpha 240'], ['2', 'Violet', VIOLET, '170 140 255', 'alpha 150'], ['3', 'Mint', MINT, '120 255 190', 'alpha 150']];
-  const cw = (W - 112 - 2 * 24) / 3;
-  list.forEach(([k, name, col, rgb, al], i) => {
-    const x = 56 + i * (cw + 24);
+  const AUR = ['rgb(255,120,150)', 'rgb(255,200,90)', 'rgb(120,255,160)', 'rgb(90,200,255)', 'rgb(170,120,255)'];
+  const list = [['1', 'Rose', ROSE, 'rgb 220 70 135'], ['2', 'Violet', VIOLET, 'rgb 170 140 255'], ['3', 'Mint', MINT, 'rgb 120 255 190'], ['4', 'Aurora', null, 'hue follows each orbit']];
+  const gap = 20, cw = (W - 112 - 3 * gap) / 4;
+  list.forEach(([k, name, col, sub], i) => {
+    const x = 56 + i * (cw + gap);
     b += `<rect x="${r2(x)}" y="48" width="${r2(cw)}" height="144" rx="16" fill="${C.paper2}" stroke="${C.rule}"/>`;
     seed = 3 + i * 7;
-    for (let j = 0; j < 9; j++) {
-      const dx = x + cw - 36 - rand(0, cw - 250), dy = rand(66, 150), s = rand(4, 12);
-      b += `<circle cx="${r2(dx)}" cy="${r2(dy)}" r="${r2(s * 1.3)}" fill="${col}" opacity=".18"/><circle cx="${r2(dx)}" cy="${r2(dy)}" r="${r2(s / 2)}" fill="${col}"/>`;
+    for (let j = 0; j < 8; j++) {
+      const c = col || AUR[j % AUR.length];
+      const dx = x + cw - 26 - rand(0, cw - 150), dy = rand(66, 120), s = rand(4, 11);
+      b += `<circle cx="${r2(dx)}" cy="${r2(dy)}" r="${r2(s * 1.3)}" fill="${c}" opacity=".18"/><circle cx="${r2(dx)}" cy="${r2(dy)}" r="${r2(s / 2)}" fill="${c}"/>`;
     }
-    b += key(k, x + 24, 72).svg;
-    b += text(name, { font: F.display, size: 26, x: x + 24, y: 146, fill: C.ink });
-    b += label(`rgb ${rgb} · ${al}`, { x: x + 24, y: 174, fill: C.muted, size: 11 });
+    b += key(k, x + 22, 66).svg;
+    b += text(name, { font: F.display, size: 24, x: x + 22, y: 150, fill: C.ink });
+    b += label(sub, { x: x + 22, y: 176, fill: C.muted, size: 10.5 });
   });
   write('assets/palettes.svg', svg(W, H, b, {
-    title: 'The three palettes',
-    desc: 'Key 1 is Rose, rgb 220 70 135. Key 2 is Violet, rgb 170 140 255. Key 3 is Mint, rgb 120 255 190.',
+    title: 'The four palettes',
+    desc: 'Key 1 is Rose, rgb 220 70 135. Key 2 is Violet, rgb 170 140 255. Key 3 is Mint, rgb 120 255 190. Key 4 is Aurora, where each orbiter moves through the hues as it travels.',
   }));
 }
 
-hero(); hero(640, 'design/social.svg'); anatomy(); palettes();
+// The four orbit shapes, drawn from the same formulas as sketch.js, plus
+// links and the kaleidoscope.
+function shapes() {
+  const W = 1280, H = 640;
+  let b = frame(W, H);
+  b += label('Press O · four orbit shapes', { x: 56, y: 64 }) + text('Same orbiters, different paths', { font: F.display, size: 30, x: 56, y: 104, fill: C.ink });
+  const cards = [
+    ['Circle', 'the original: a fixed radius', (a) => [Math.cos(a), Math.sin(a)], ROSE],
+    ['Ellipse', 'a tilted, squashed circle', (a) => { const ex = Math.cos(a), ey = Math.sin(a) * 0.45, t = -0.5; return [ex * Math.cos(t) - ey * Math.sin(t), ex * Math.sin(t) + ey * Math.cos(t)]; }, VIOLET],
+    ['Flower', 'r · cos(petals · a), 2–5 petals', (a) => { const rr = Math.cos(3 * a); return [Math.cos(a) * rr, Math.sin(a) * rr]; }, MINT],
+    ['Spiral', 'r breathes from 10% to 100%', (a) => { const rr = 0.55 + 0.45 * Math.sin(a * 0.37); return [Math.cos(a) * rr, Math.sin(a) * rr]; }, 'rgb(255,200,90)'],
+  ];
+  const gap = 20, cw = (W - 112 - 3 * gap) / 4;
+  cards.forEach(([name, sub, f, col], i) => {
+    const x = 56 + i * (cw + gap), y = 136, ch = 290;
+    b += `<rect x="${r2(x)}" y="${y}" width="${r2(cw)}" height="${ch}" rx="16" fill="${C.paper2}" stroke="${C.rule}"/>`;
+    const cx = x + cw / 2, cy = y + 130, R = 92;
+    const turns = name === 'Spiral' ? 6 * Math.PI * 2 : Math.PI * 2;
+    let d = '';
+    for (let j = 0; j <= 600; j++) { const [px, py] = f((j / 600) * turns); d += `${j ? 'L' : 'M'}${r2(cx + px * R)} ${r2(cy + py * R)}`; }
+    b += `<path d="${d}" stroke="${col}" stroke-width="1.6" opacity=".55"/>`;
+    b += `<circle cx="${r2(cx)}" cy="${r2(cy)}" r="3.5" fill="${C.ink}"/>`;
+    const [px, py] = f(name === 'Spiral' ? 2.2 : 0.7);
+    b += `<circle cx="${r2(cx + px * R)}" cy="${r2(cy + py * R)}" r="13" fill="${col}" opacity=".22"/><circle cx="${r2(cx + px * R)}" cy="${r2(cy + py * R)}" r="5.5" fill="${col}"/>`;
+    b += text(name, { font: F.display, size: 22, x: x + 22, y: y + ch - 44, fill: C.ink });
+    b += text(sub, { font: F.mono, size: 11.5, x: x + 22, y: y + ch - 20, fill: C.muted });
+  });
+  // links and kaleidoscope
+  const y2 = 450, half = (W - 112 - gap) / 2;
+  b += `<rect x="56" y="${y2}" width="${r2(half)}" height="150" rx="16" fill="${C.paper2}" stroke="${C.rule}"/>`;
+  seed = 40;
+  const pts = Array.from({ length: 16 }, () => [rand(360, 56 + half - 30), rand(y2 + 22, y2 + 128)]);
+  for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+    const d = Math.hypot(pts[i][0] - pts[j][0], pts[i][1] - pts[j][1]);
+    if (d < 90) b += `<path d="M${r2(pts[i][0])} ${r2(pts[i][1])}L${r2(pts[j][0])} ${r2(pts[j][1])}" stroke="${MINT}" stroke-width="1" opacity="${r2(0.15 + 0.5 * (1 - d / 90))}"/>`;
+  }
+  for (const [px, py] of pts) b += `<circle cx="${r2(px)}" cy="${r2(py)}" r="7" fill="${MINT}" opacity=".2"/><circle cx="${r2(px)}" cy="${r2(py)}" r="3" fill="${MINT}"/>`;
+  b += key('L', 78, y2 + 24).svg + text('Constellation links', { font: F.display, size: 22, x: 78, y: y2 + 90, fill: C.ink });
+  b += paragraph('Orbiters closer than 90 px are joined; the closer, the brighter.', { x: 78, y: y2 + 116, width: 250, size: 13.5 }).svg;
+  const kx = 56 + half + gap;
+  b += `<rect x="${r2(kx)}" y="${y2}" width="${r2(half)}" height="150" rx="16" fill="${C.paper2}" stroke="${C.rule}"/>`;
+  const mcx = kx + half - 120, mcy = y2 + 75;
+  for (let k = 0; k < 6; k++) {
+    const a = (Math.PI * 2 * k) / 6;
+    b += `<g transform="rotate(${r2((a * 180) / Math.PI)} ${r2(mcx)} ${mcy})"><ellipse cx="${r2(mcx + 34)}" cy="${mcy}" rx="30" ry="12" stroke="${VIOLET}" stroke-width="1.4" opacity=".55" transform="rotate(-25 ${r2(mcx + 34)} ${mcy})"/><circle cx="${r2(mcx + 58)}" cy="${mcy - 10}" r="4.5" fill="${VIOLET}"/><circle cx="${r2(mcx + 22)}" cy="${mcy + 8}" r="3" fill="${VIOLET}" opacity=".8"/></g>`;
+  }
+  b += `<circle cx="${r2(mcx)}" cy="${mcy}" r="3" fill="${C.ink}"/>`;
+  b += key('K', kx + 22, y2 + 24).svg + text('Kaleidoscope', { font: F.display, size: 22, x: kx + 22, y: y2 + 90, fill: C.ink });
+  b += paragraph('The scene drawn 1, 2, 3, 4 or 6 times, turned around the centre.', { x: kx + 22, y: y2 + 116, width: 300, size: 13.5 }).svg;
+  write('assets/shapes.svg', svg(W, H, b, {
+    title: 'Orbit shapes, links and kaleidoscope',
+    desc: 'Press O to cycle four orbit shapes: Circle, Ellipse (a tilted, squashed circle), Flower (a rose curve with 2 to 5 petals) and Spiral (a radius that breathes in and out). Press L for constellation links between orbiters closer than 90 pixels, and K for a kaleidoscope that draws the scene 1, 2, 3, 4 or 6 times around the centre.',
+  }));
+}
+
+hero(); hero(640, 'design/social.svg'); anatomy(); palettes(); shapes();

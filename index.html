@@ -23,11 +23,27 @@
   </main>
   <aside id="guide" aria-label="How to play">
     <h1>Orbit Playground</h1>
-    <p class="wide">Click: add · Hold: add slowly · <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> palette · <kbd>↑</kbd> <kbd>↓</kbd> speed</p>
-    <p class="wide"><kbd>Space</kbd> pause · <kbd>C</kbd> clear · <kbd>R</kbd> reset · <kbd>S</kbd> save · <kbd>H</kbd> hide this guide</p>
-    <p class="narrow">Tap to add · hold to keep adding</p>
+    <p class="wide">Click: add · Hold: add slowly · <kbd>1</kbd>–<kbd>4</kbd> palette · <kbd>↑</kbd> <kbd>↓</kbd> speed</p>
+    <p class="wide"><kbd>O</kbd> shape · <kbd>L</kbd> links · <kbd>K</kbd> kaleidoscope · <kbd>Space</kbd> pause</p>
+    <p class="wide"><kbd>C</kbd> clear · <kbd>R</kbd> reset · <kbd>S</kbd> save · <kbd>H</kbd> hide this guide</p>
+    <p class="narrow">Tap to add · hold to keep adding · the buttons below do the rest</p>
     <p id="status" role="status" aria-live="off">20 / 300 orbiters · speed 0.020 · Rose</p>
   </aside>
+  <nav id="dock" aria-label="Controls">
+    <button id="dock-palette" type="button" title="Palette (1–4)"><i class="sw"></i><span>Rose</span></button>
+    <button id="dock-shape" type="button" title="Orbit shape (O)"><span>Circle</span></button>
+    <button id="dock-links" type="button" title="Constellation links (L)" aria-pressed="false"><span>Links</span></button>
+    <button id="dock-symmetry" type="button" title="Kaleidoscope (K)" aria-pressed="false"><span>Mirror</span></button>
+    <span class="sep" aria-hidden="true"></span>
+    <button id="dock-slower" type="button" title="Slower (↓)" aria-label="Slower"><span>−</span></button>
+    <button id="dock-faster" type="button" title="Faster (↑)" aria-label="Faster"><span>+</span></button>
+    <button id="dock-pause" type="button" title="Pause (Space)" aria-pressed="false"><span>Pause</span></button>
+    <span class="sep" aria-hidden="true"></span>
+    <button id="dock-clear" type="button" title="Clear (C)"><span>Clear</span></button>
+    <button id="dock-reset" type="button" title="Reset (R)"><span>Reset</span></button>
+    <button id="dock-save" type="button" title="Save a PNG (S)"><span>Save</span></button>
+    <button id="dock-guide" type="button" title="Show or hide the guide (H)" aria-pressed="true"><span>Guide</span></button>
+  </nav>
   <script src="sketch.js"></script>
 </body>
 </html>
