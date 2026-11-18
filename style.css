@@ -76,9 +76,11 @@ noscript {
 /* ---- the dock: every control as a button, for touch screens and mice ---- */
 #dock {
   position: fixed;
-  left: 50%;
+  left: 0;
+  right: 0;
   bottom: max(14px, env(safe-area-inset-bottom));
-  transform: translateX(-50%);
+  width: max-content;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -129,6 +131,6 @@ noscript {
   background: conic-gradient(#dc4687, #aa8cff, #78ffbe, #dc4687);
 }
 @media (max-width: 720px) {
-  #dock { left: 10px; right: 10px; transform: none; justify-content: flex-start; }
+  #dock { left: 10px; right: 10px; width: auto; margin: 0; justify-content: flex-start; }
 }
 @media (prefers-reduced-motion: reduce) { #dock { transition: none; } }
