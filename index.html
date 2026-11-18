@@ -2,13 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Orbit Playground</title>
+  <meta name="description" content="An interactive canvas of orbiting dots. Click to set a new centre of motion, change the palette and find a rhythm between stillness and speed." />
+  <meta name="theme-color" content="#05060a" />
+  <meta name="author" content="Harvey Rayhanson" />
+  <meta property="og:title" content="Orbit Playground" />
+  <meta property="og:description" content="Click a point. Set a small universe in motion." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orbit-playground.rayhanson.tech/" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/Rayhanson-Git/orbit_playground/main/assets/social.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
 </head>
 <body>
-  <main></main>
+  <main>
+    <noscript>Orbit Playground needs JavaScript to draw its canvas.</noscript>
+  </main>
+  <aside id="guide" aria-label="How to play">
+    <h1>Orbit Playground</h1>
+    <p class="wide">Click: add · Hold: add slowly · <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> palette · <kbd>↑</kbd> <kbd>↓</kbd> speed</p>
+    <p class="wide"><kbd>Space</kbd> pause · <kbd>C</kbd> clear · <kbd>R</kbd> reset · <kbd>S</kbd> save · <kbd>H</kbd> hide this guide</p>
+    <p class="narrow">Tap to add · hold to keep adding</p>
+    <p id="status" role="status" aria-live="off">20 / 300 orbiters · speed 0.020 · Rose</p>
+  </aside>
   <script src="sketch.js"></script>
 </body>
 </html>
