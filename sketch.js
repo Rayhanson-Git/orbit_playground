@@ -130,6 +130,17 @@ function mouseReleased() {
   pressOnCanvas = false;
 }
 
+// Touch screens: p5 does not call mousePressed when a finger lands, so the
+// touch handlers share the mouse code. Returning false from a press on the
+// canvas also stops the browser from sending a second, emulated click.
+function touchStarted(event) {
+  return mousePressed(event);
+}
+
+function touchEnded() {
+  pressOnCanvas = false;
+}
+
 function keyPressed() {
   if (key >= '1' && key <= '4') setPalette(Number(key));
   else if (key === 'c' || key === 'C') orbiters = [];
